@@ -1,0 +1,130 @@
+if game.PlaceId == 3101667897 then
+local UILibrary = loadstring(game:HttpGet("https://pastebin.com/raw/V1ca2q9s"))()
+
+-- Locals --
+local MainUI = UILibrary.Load("Script Hub - Serpent")
+local InfoPage = MainUI.AddPage("Info")
+local GamePage = MainUI.AddPage("Game")
+local CreditsPage = MainUI.AddPage("Credits")
+-- Variables --
+
+local plr = game.Players.LocalPlayer.Character;
+_G.autoFarm = false;
+_G.autoRaces = false;
+
+-- Info Page --
+InfoPage.AddLabel("[!]")
+InfoPage.AddToggle("Anti-Afk",false, function(bool)
+shared.toggle = bool
+    AntiAfk = bool
+end)
+InfoPage.AddLabel("[!]")
+
+
+-- Game Page --
+GamePage.AddLabel("Auto Farm")
+GamePage.AddToggle("Auto-Steps",false, function(bool)
+_G.autoFarm = bool
+if bool then
+	Steps();
+end
+end)
+GamePage.AddToggle("Auto-Gems",false, function(bool)
+_G.autoFarm = bool
+if bool then
+	Gems();
+end
+end)
+
+GamePage.AddToggle("Auto-Hoops",false, function(bool)
+_G.autoFarm = bool
+if bool then
+	Hoops();
+end
+end)
+
+GamePage.AddLabel("Races")
+
+GamePage.AddLabel("Delete Start Lines")
+GamePage.AddDropdown("Map", {
+"Grassland",
+"Desert",
+"Magma"
+}, function(v)
+end)
+
+GamePage.AddLabel("TP End")
+GamePage.AddButton("Grassland",function(value)
+plr.HumanoidRootPart.CFrame = CFrame.new(1686.07495, 36.3147125, -5946.63428, -0.984812617, 0, 0.173621148, 0, 1, 0, -0.173621148, 0, -0.984812617)
+end)
+GamePage.AddButton("Desert",function(value)
+plr.HumanoidRootPart.CFrame = CFrame.new(48.3109131, 36.3147125, -8680.45313, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+end)
+GamePage.AddButton("Magma",function(value)
+plr.HumanoidRootPart.CFrame = CFrame.new(1001.33118, 36.3147125, -10986.2178, -0.996191859, 0, -0.0871884301, 0, 1, 0, 0.0871884301, 0, -0.996191859)
+end)
+
+
+-- Credits Page --
+CreditsPage.AddLabel("Created By AltLexon#1546")
+CreditsPage.AddButton("Copy Discord Server", function()
+setclipboard("https://discord.gg/jsMyc7r2")
+end)
+
+
+-- Functions --
+game:GetService('RunService').Stepped:connect(function()
+    spawn(function()
+        if AntiAfk == true then
+            local bb=game:service'VirtualUser'
+            bb:CaptureController()
+            bb:ClickButton2(Vector2.new())
+        end
+    end)
+end)
+
+function Steps()
+spawn(function()
+while _G.autoFarm == true do
+	local args = {
+    [1] = "collectOrb",
+    [2] = "Red Orb",
+    [3] = "City"
+}
+
+game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+	wait()
+	end
+end)
+end
+
+function Gems()
+spawn(function()
+while _G.autoFarm == true do
+	local args = {
+    [1] = "collectOrb",
+    [2] = "Gem",
+    [3] = "City"
+}
+
+game:GetService("ReplicatedStorage").rEvents.orbEvent:FireServer(unpack(args))
+	wait()
+	end
+end)
+end
+
+function Hoops()
+    spawn(function()
+    while _G.autoFarm == true do
+        local oldcframe = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+        for _,v in pairs(game:GetService("Workspace").Hoops:GetChildren()) do
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.CFrame
+            wait(0.1)
+        end
+        wait(0.1)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldcframe
+        wait()
+        end
+    end)
+    end
+end
